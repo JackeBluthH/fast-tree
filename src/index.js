@@ -107,7 +107,7 @@
             state.vscroll = state.height;
 
             delay(function() {
-                utils.DOMRender(root, render())
+                utils.DOMRender(domTree, render())
             }, bForceRender);
         }
 
@@ -179,8 +179,15 @@
             ].join('');
         }
 
+        const domSearch = $('<div class="tree-search"><input ></div>');
+        const domTree = $('<div></div>');
+        if (state.search) {
+            domSearch.appendTo(root);
+        }
+        domTree.appendTo(root);
+
         // 生成DOM结构，并绑定事件
-        $(root).on('click', function (e) {
+        domTree.on('click', function (e) {
             Object.keys(ClickMap).forEach(function (selector) {
                 if ($(e.target).is(selector)) {
                     let itemNode = $(e.target).closest('.tree-item')[0];
@@ -206,9 +213,10 @@
             },
             destory: function () {
                 //destory
-                $(root).off('scroll').off('click').empty();
+                $(domTree).off('scroll').off('click');
+                $(root).empty();
             }
-        }
+        };
     }
 }, {
     $: window.jQuery,

@@ -41,6 +41,7 @@ let treeCtrl = null;
         treeCtrl = tree('#root', {
             treeData: treeData,
             multiple: true,
+            search: true,
             onChange: function(node) {
                 document.getElementById('cur_node').innerText = node.value + ': ' + node.title;
             }
