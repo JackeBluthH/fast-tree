@@ -1,0 +1,109 @@
+<title>Fast Tree</title>
+<script src='./jquery-3.1.0.min.js'></script>
+<script src="../src/index.js"></script>
+<script>
+    
+const treeData = [
+  {
+    title: 'Node1',
+    value: '0-0',
+    children: [
+      {
+        title: 'Child Node1 long long long long long title jdkfj skj j jjj sdj jsdkjj sjjds s j k',
+        value: '0-0-1',
+      },
+      {
+        title: 'Child Node2',
+        value: '0-0-2',
+      },
+    ],
+  },
+  {
+    title: 'Node2',
+    value: '0-1',
+  },
+];
+
+for (let i = 3; i < 50000; i++) {
+  treeData[0].children.push({title: 'node1-' + i, value:'0-0-'+i})
+}
+treeData[0].children[3].children = [];
+treeData[0].children[40].children = [];
+for (let i = 1; i < 500; i++) {
+  treeData[0].children[3].children.push({title: 'node1-3-' + i, value:'0-0-3-'+i})
+}
+for (let i = 1; i < 500; i++) {
+  treeData[0].children[40].children.push({title: 'node1-40-' + i, value:'0-0-40-'+i})
+}
+
+let treeCtrl = null;
+    $(document).ready(function() {
+        treeCtrl = tree('#root', {
+            treeData: treeData,
+            multiple: true,
+            onChange: function(node) {
+                document.getElementById('cur_node').innerText = node.value + ': ' + node.title;
+            }
+        });
+    })
+</script>
+<style>
+    .icon::before {
+        display: inline-block;
+        width: 20px;
+    }
+    .icon-node-open::before {
+        content: '-';
+    }
+    .icon-node-close::before {
+        content: '+';
+    }
+    .icon-check-all::before {
+        content: '√';
+    }
+    .icon-check-half::before {
+        content: '⊙';
+    }
+    .icon-check-none::before {
+        content: '□';
+    }
+    .icon-leaf::before {
+        content: ' ';
+    }
+    .tree-item {
+        list-style: none;
+        padding-top: 5px;
+        cursor: pointer;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .tree-item:hover{
+        background-color: rgb(209, 246, 255);
+    }
+    .tree-item-indent {
+        display: inline-block;
+    }
+    #root {
+        min-width: 480px;
+        max-width: 600px;
+        max-height: 600px;
+        overflow: auto;
+        border: 1px solid #ddd;
+    }
+</style>
+<body>
+    <h1>支持海量数据的tree控件</h1>
+    <button onclick="treeCtrl.setOption({multiple:false})">单选</button>
+    <button onclick="treeCtrl.setOption({multiple:true})">多选</button>
+    
+    <div style="display: flex;">
+        <div id="root"></div>
+        <div>
+            <div>Selected: </div>
+            <span style="padding-left: 20px;" id="cur_node"></span>
+            <div style="margin-top: 30px;">共有51000条数据</div>
+            <div style="margin-top: 30px;"><a href="./tree.zip">Code Download</a></div>
+        </div>
+    </div>
+</body>
